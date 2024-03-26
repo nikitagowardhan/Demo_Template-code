@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asterisc Enquiry Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f3f3;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #f5f5f5;
+            color: #333;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        .header img {
+            width: 200px; /* Adjust the width to your preference */
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .enquiry-details {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .enquiry-details p {
+            margin: 10px 0;
+            font-size: 16px; /* Adjust font size as needed */
+            line-height: 1.6; /* Adjust line height for readability */
+            font-family: Arial, sans-serif; /* Specify font family */
+        }
+
+        .enquiry-details strong {
+            font-weight: bold; /* Ensure strong elements are bold */
+        }
+
+        @media screen and (max-width: 768px) {
+            .container {
+                max-width: 100%;
+            }
+            .enquiry-details p {
+                font-size: 14px; /* Reduce font size for smaller screens */
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .header, .footer {
+                padding: 10px 0;
+            }
+
+            .enquiry-details p {
+                font-size: 12px; /* Further reduce font size for smaller screens */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://i.imgur.com/2WawVt1.png" alt="Asterisc Image">
+        </div>
+        <div class="enquiry-details">
+            <p><strong>Full Name:</strong> <?= rowData[2] ?></p>
+            <p><strong>Email:</strong> <?= rowData[1] ?></p>
+            <p><strong>Mobile:</strong> <a href="https://wa.me/<?= rowData[3] ?>?text=Hello" target="_blank"><?= rowData[3] ?></a></p>
+            <p><strong>Qualification:</strong> <?= rowData[5] ?></p>
+            <p><strong>College/Company:</strong> <?= rowData[4] ?></p>
+            <p><strong>Year:</strong> <?= rowData[6] ?></p>
+            <p><strong>Demo Class Date:</strong> <?= rowData[10] ?></p>
+            <p><strong>Batch Time: </strong> <?= rowData[11] ?></p>
+            <p><strong>Services: </strong> <?= rowData[7] ?></p>
+            <p><strong>Course:</strong> <?= rowData[8] ?></p>
+            <p><strong>Free Demo Session Update:</strong> <?= rowData[9] ?></p>
+            <p>Please review the demo details and take necessary actions.</p>
+            <p>Thank you..</p>
+
+
+            <div style="text-align: center; margin-top: 20px;">
+            <a href="https://wa.me/<?= rowData[3] ?>?text=Hello" target="_blank" style="display: inline-block; text-decoration: none; background-color: grey; color: white; padding: 10px 20px; border-radius: 5px; margin-right: 10px;">WhatsApp</a>
+            <a href="tel:<?= rowData[3] ?>" style="display: inline-block; text-decoration: none; background-color: grey; color: white; padding: 10px 20px; border-radius: 5px;">Call</a>
+        </div>
+        </div>
+        
+    </div>
+</body>
+
+</html>
