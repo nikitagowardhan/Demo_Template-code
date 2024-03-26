@@ -1,0 +1,129 @@
+function setupTrigger() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  
+  // Delete existing triggers for sendEnquiryToTeacher function
+  var triggers = ScriptApp.getProjectTriggers();
+  for (var i = 0; i < triggers.length; i++) {
+    if (triggers[i].getHandlerFunction() === "sendEnquiryToTeacher") {
+      ScriptApp.deleteTrigger(triggers[i]);
+    }
+  }
+
+  // Create a new trigger for sendEnquiryToTeacher function
+  ScriptApp.newTrigger('sendEnquiryToTeacher')
+    .forSpreadsheet(ss)
+    .onFormSubmit()
+    .create();
+}
+
+function sendEnquiryToTeacher() {
+  try {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Form Responses 1");
+    var lastRow = sheet.getLastRow();
+    var rowData = sheet.getRange(lastRow, 1, 1, sheet.getLastColumn()).getValues()[0];
+
+    // Extracting relevant data from the form submission
+    var timestamp = rowData[0];
+    var email = rowData[1];
+    var demoClassDate = rowData[10];
+    var batchTime = rowData[11];
+    var fullName = rowData[2];
+    var mobile = rowData[5];
+    var collegeCompany = rowData[4];
+    var qualification = rowData[5];
+    var year = rowData[6];
+    var services = rowData[7];
+    var course = rowData[8];
+    var freeCourseNotification = rowData[9];
+
+    
+
+    // Retrieve data from the teacher details sheet
+    var teacherSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Sheet1");
+    var teacherRow = teacherSheet.getLastRow();
+    var teacherData = teacherSheet.getRange(teacherRow, 1, 1, teacherSheet.getLastColumn()).getValues()[0];
+
+    // Extracting relevant data from the teacher details
+    var teacherName = teacherData[1];
+
+    var teacherEmail = teacherData[0]; 
+
+    // Compose the email message to teacher
+    var messageHtmlBody = HtmlService.createTemplateFromFile('tem1.html');
+    messageHtmlBody.rowData = rowData;
+    var messageBody = messageHtmlBody.evaluate().getContent();
+
+    // Send the HTML email to teacher
+    MailApp.sendEmail({
+      to: teacherEmail,
+      subject: "New Demo Request Received from Student",
+      htmlBody: messageBody
+    });
+      
+      Logger.log("New Demo received email sent successfully to " + teacherEmail);
+  } catch (error) {
+    Logger.log("Error occurred: " + error);
+  }
+
+  
+
+
+
+      try {
+    var formSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Form Responses 1");
+    var formLastRow = formSheet.getLastRow();
+    var formData = formSheet.getRange(formLastRow, 1, 1, formSheet.getLastColumn()).getValues()[0];
+    var courseFromForm = formData[8]; // Assuming course is in column I
+
+    var sheet2 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Course List");
+    var sheet2LastRow = sheet2.getLastRow();
+    var sheet2Data = sheet2.getRange(2, 1, sheet2LastRow - 1, sheet2.getLastColumn()).getValues(); // Assuming data starts from row 2
+    var pdfFileId = '';
+     
+
+    for (var i = 0; i < sheet2Data.length; i++) {
+      var courseFromSheet2 = sheet2Data[i][0]; // Assuming course is in column A
+      
+      if (courseFromForm === courseFromSheet2) {
+        pdfFileId = sheet2Data[i][1]; // Assuming PDF ID is in column 
+        break;
+      }
+    }
+
+    var pdf= pdfFileId; 
+         Logger.log("Error occurred: " + pdf);
+
+
+    if (pdf !== '') {
+      var pdfBlob = DriveApp.getFileById(pdf).getBlob();
+      Logger.log("Error occurred: " + pdfBlob);
+
+      var messageHtmlBody = HtmlService.createTemplateFromFile('tem2.html');
+      messageHtmlBody.rowData = rowData;
+      messageHtmlBody.pdf = pdf;
+      var messageBody = messageHtmlBody.evaluate().getContent();
+
+      var email = rowData[1]; // Assuming email is in column B
+
+      MailApp.sendEmail({
+        to: email,
+        subject: "Take Your Career to New Heights with ASTERISC: Demo Update from Asterisc Group 🌟🚀",
+        htmlBody: messageBody,
+        attachments: [pdfBlob]
+      });
+
+      Logger.log("HTML email sent to " + email);
+    } else {
+      Logger.log("No matching course found in Sheet1.");
+    }
+  } catch (error) {
+    Logger.log("Error occurred: " + error);
+  }
+
+
+    
+
+
+
+
+}
